@@ -30,18 +30,20 @@ def initiateCommunication(cardFile):
     cardUID = getUID(cardInfo)
     print(f"Card UID: {cardUID.hex()}")
     
-    sectorNo = int(input("Which sector (0-15) do you want to access? "))
-    if ((sectorNo < 0) or (sectorNo > 15)):
-        print("Invalid number, has to be 0-15")
-    else: 
-        accessSector(cardInfo, sectorNo)
+    while (True):
+        sectorNo = int(input("Which sector (0-15) do you want to access? "))
+        if ((sectorNo < 0) or (sectorNo > 15)):
+            print("Invalid number, has to be 0-15")
+        else: 
+            break
+    accessSector(cardInfo, sectorNo)
 
 
 def accessSector(cardInfo, sectorNo):
     # Check if any standard or common key can authenticate the card.
     offset = sectorNo * (numBlocks * numBytes)
-    sectorTrailer = cardInfo[-(offset + numBytes):]  # Assuming sector trailer is the last 16 bytes
-    # Add a check if keyB is readable
+    sectorTrailer = cardInfo[-(offset + numBytes):]  
+    
     access = sectorTrailer[6:9]
 
     halfAccess = int.from_bytes(access, byteorder='little') & 0xFFF
@@ -79,7 +81,7 @@ def accessSector(cardInfo, sectorNo):
 
 def readData(sectorNo, access, trailerAccess, group, key, cardInfo):
     offset = sectorNo * (numBlocks * numBytes)
-    sectorTrailer = cardInfo[-(offset + numBytes):]  # Assuming sector trailer is the last 16 bytes
+    sectorTrailer = cardInfo[-(offset + numBytes):]  
     blockNum = sectorNo * 4 + group
     data = cardInfo[blockNum * 16:(blockNum + 1) * 16]
 
@@ -164,9 +166,11 @@ def getUID(cardInfo):
     return cardUID
 
 # Main
-filename = str(input("What is the name of your MIFARE Card File? "))
-filename = filename.strip()     
-if not os.path.isfile(filename):
-    print("Unable to find file, please try again")
-else:
-    initiateCommunication(filename)
+while (True):
+    filename = str(input("What is the name of your MIFARE Card File? "))
+    filename = filename.strip()     
+    if not os.path.isfile(filename):
+        print("Unable to find file, please try again")
+    else:
+        break
+initiateCommunication(filename)

@@ -157,9 +157,6 @@ def checkCommonKeys(cardInfo, sectorNo):
     print(f"Sector 3 access: {group3}")
     print(f"Trailer sector access: {group4}")
 
-    
-    # print(f"Key A is: {keyA.hex()}")
-
     # Try standard keys first
     foundKeyA = False
     foundKeyB = False
@@ -214,9 +211,11 @@ def getUID(cardInfo):
     return cardUID
 
 # Main
-filename = str(input("What is the name of your MIFARE Card File? "))
-filename = filename.strip()     # Strip any leading or trailing whitespace
-if not os.path.isfile(filename):
-    print("Unable to find file, please try again")
-else:
-    initiateCommunication(filename)
+while (True):
+    filename = str(input("What is the name of your MIFARE Card File? "))
+    filename = filename.strip()     # Strip any leading or trailing whitespace
+    if not os.path.isfile(filename):
+        print("Unable to find file, please try again")
+    else:
+        break
+initiateCommunication(filename)

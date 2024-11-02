@@ -249,20 +249,26 @@ def collectDataSector(sectorNo, keyA, keyB, sectorAccess, groupNo, cardInfo):
     offset = sectorNo * (numBlocks * numBytes)
     sectorTrailer = cardInfo[-(offset + numBytes):]  # Assuming sector trailer is the last 16 bytes
 
-    sectorTrailer = keyA
+   
+    accessBits = sectorTrailer[6:10]
+
     actualKeyA = sectorTrailer[0:6]
     actualKeyB = sectorTrailer[10:16]
 
+
+    trailerData = actualKeyA
+
     if (keyA == actualKeyA):
-        sectorTrailer += sectorTrailer[6:10]
+        trailerData += sectorTrailer[6:10]
     elif ((keyB == actualKeyB) and 
           (sectorAccess != 0b000 and sectorAccess != 0b010 and sectorAccess != 0b001)):
-        sectorTrailer += sectorTrailer[6:10]
+        trailerData += sectorTrailer[6:10]
     else:
-        sectorTrailer += b'\x00' * 4
-    sectorTrailer += keyB
+        trailerData += b'\x00' * 4
 
-    return sectorTrailer
+    trailerData += actualKeyB
+
+    return trailerData
 
 ################# Verifies if the key can read data block #####################
 def correctDataKey(sectorNo, access, trailerAccess, group, key, cardInfo):
@@ -404,9 +410,7 @@ def accessSector(cardInfo, sectorNo):
     sectorTrailer = cardInfo[-(offset + numBytes):]  # Assuming sector trailer is the last 16 bytes
     # Add a check if keyB is readable
     access = sectorTrailer[6:9]
-    print(f'access bytes {access}')
     accessBits = f"{int.from_bytes(access, byteorder='little'):024b}"
-    print(f'access bits {accessBits}')
 
     halfAccess = int.from_bytes(access, byteorder='little') & 0xFFF
     group1 = 0
@@ -485,7 +489,7 @@ while (True):
 # Will try to maximise read access where possible or inform use of unclonable data blocks
 cardIsFullReadable(filename)                        
 clonedData = initiateReadCommunication(filename)
-print(f'{clonedData}')
+
 
 while (True):
     filename = str(input("What is the name of the NFC Card File recieving the clone? "))
@@ -496,3 +500,4 @@ while (True):
         break
 
 initiateWriteCommunication(filename, clonedData)
+print("Successful cloning completed!")

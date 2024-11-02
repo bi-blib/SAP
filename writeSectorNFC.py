@@ -176,9 +176,11 @@ def getUID(cardInfo):
     return cardUID
 
 # Main
-filename = str(input("What is the name of the MIFARE Card File? "))
-filename = filename.strip()     
-if not os.path.isfile(filename):
-    print("Unable to find file, please try again")
-else:
-    initiateCommunication(filename)
+while (True):
+    filename = str(input("What is the name of the MIFARE Card File? "))
+    filename = filename.strip()     
+    if not os.path.isfile(filename):
+        print("Unable to find file, please try again")
+    else:
+        break
+initiateCommunication(filename)

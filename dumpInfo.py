@@ -1,3 +1,5 @@
+import os
+
 ####################### Dumps info of card for debugging #######################
 def print_hexdump(card_data):
     print("MIFARE Classic 1K Hexdump\n" + "-" * 60)
