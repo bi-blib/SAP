@@ -1,5 +1,4 @@
 blockSize = 16
-
 def writeMemoryBlock(file, sector, block, data):
     if (len(data) > blockSize) return 'invalid data'
     # data needs to be padded to be 16 bytes, ljust padds after data 
