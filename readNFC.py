@@ -10,7 +10,7 @@ def readKey(question):
     while True:
         rawKey = input(question)  
         rawKey = rawKey.strip()   
-        # Check if the input starts with '0x'
+        # Change the input 
         if rawKey.startswith("0x"):
             key = int(rawKey, 16)  
             # Store the key as 6 bytes
@@ -20,12 +20,12 @@ def readKey(question):
                 print("Invalid key: Must be 6 bytes long.")
                 continue
                 
-            return keyBytes  # Return the bytes object
+            return keyBytes  
         else:
             print("Please enter the key starting with '0x'.")
 
 def initiateCommunication(cardFile):
-    """Start the communication process by reading the card data."""
+    # Read card data
     cardInfo = openCardFile(cardFile)
     cardUID = getUID(cardInfo)
     print(f"Card UID: {cardUID.hex()}")

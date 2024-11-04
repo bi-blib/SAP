@@ -15,17 +15,16 @@ def readKey(question):
     while True:
         rawKey = input(question)  
         rawKey = rawKey.strip()   
-        # Check if the input starts with '0x'
+        # Extract the hex key from the string
         if rawKey.startswith("0x"):
             key = int(rawKey, 16)  
-            # Store the key as 6 bytes
             keyBytes = key.to_bytes(6, byteorder='big')  
                 
             if (validKeyFormat(keyBytes) == False):
                 print("Invalid key: Must be 6 bytes long.")
                 continue
                 
-            return keyBytes  # Return the bytes object
+            return keyBytes  
         else:
             print("Please enter the key starting with '0x'.")
 
@@ -48,7 +47,6 @@ def readAccess(question):
             print("Please enter the key starting with '0x'.")
 
 def initiateCommunication(filename):
-    """Ask for the key"""
     with open(filename, 'rb') as f:
         cardInfo = f.read()
     cardUID = getUID(cardInfo)
@@ -92,7 +90,7 @@ def accessSector(cardInfo, sectorNo, areaAccess):
     sectorTrailer = cardInfo[-(offset + numBytes):]  # Assuming sector trailer is the last 16 bytes
     # Add a check if keyB is readable
     access = sectorTrailer[6:9]
-    
+
     halfAccess = int.from_bytes(access, byteorder='little') & 0xFFF
     group1 = 0
     group2 = 0 

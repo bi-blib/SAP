@@ -4,7 +4,7 @@ numBytes = 16
 numBlocks = 4
 
 def initiateCommunication(cardFile):
-    """Start the communication process by reading the card data."""
+    # Read card data
     cardInfo = openCardFile(cardFile)
     cardUID = getUID(cardInfo)
     print(f"Card UID: {cardUID.hex()}")
@@ -91,7 +91,6 @@ def readableKeyB(access):
     return False
 
 def openCardFile(filename):
-    """Read the card file and return its content."""
     with open(filename, 'rb') as f:
         return f.read()
 
