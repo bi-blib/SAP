@@ -1,4 +1,4 @@
-import offset
+import os
 
 numBytes = 16
 numBlocks = 4
@@ -100,7 +100,7 @@ def fetchSectorInfo(cardInfo, sectorNo):
 def collectDataBlock(sectorNo, keyA, keyB, groupAccess, sectorAccess, groupNo, cardInfo):
     if (correctDataKey(sectorNo, groupAccess, sectorAccess, groupNo, keyA, cardInfo) == True):
         return readData(sectorNo, groupAccess, sectorAccess, groupNo, keyA, cardInfo)        
-    elif (useableKeyB(group4) == True):
+    elif (useableKeyB(sectorAccess) == True):
         if (correctDataKey(sectorNo, groupAccess, sectorAccess, groupNo, keyB, cardInfo) == True):
             return readData(sectorNo, groupAccess, sectorAccess, groupNo, keyB, cardInfo)
 

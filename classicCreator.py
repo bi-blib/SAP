@@ -3,20 +3,15 @@ import os
 
 blockSize = 16
 
-# Initialize a blank MIFARE 1KB card with default values
 def initialize_card(file_name):
-    # Create a blank 1KB file (1024 bytes)
     with open(file_name, 'wb') as f:
-        # Iterate through all 16 sectors
         for sector in range(16):
-            # Write 4 blocks (16 bytes each) per sector
             for block in range(4):
                 if sector == 0 and block == 0:
                     writeBlock0(f)
                 elif block == 3:  # Sector trailer (access control and keys)
                     # Key A (6 bytes) + Access bits (4 bytes) + Key B (6 bytes)
                     keyA = b'\xFF' * 6
-                    # Access bits to lock block 
                     accessBits = b'\x00\x08\x80' 
                     userData = b'\x00'
                     keyB = b'\xFF' * 6

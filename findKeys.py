@@ -59,7 +59,7 @@ def checkCommonKeys(cardInfo, sectorNo):
     # Look for KeyB
     if (readableKeyB(group4) == True):
         keyB = sectorTrailer[10:16]
-        for key in known:
+        for key in knownKeys:
             if (key == keyB):
                 print(f"Authentication succeeded with Key B: {key.hex()}")
                 foundKeyB = True

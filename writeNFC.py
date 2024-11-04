@@ -65,10 +65,7 @@ def accessSector(cardInfo, sectorNo):
     sectorTrailer = cardInfo[-(offset + numBytes):]  # Assuming sector trailer is the last 16 bytes
     # Add a check if keyB is readable
     access = sectorTrailer[6:9]
-    print(f'access bytes {access}')
-    accessBits = f"{int.from_bytes(access, byteorder='little'):024b}"
-    print(f'access bits {accessBits}')
-
+    
     halfAccess = int.from_bytes(access, byteorder='little') & 0xFFF
     group1 = 0
     group2 = 0 
